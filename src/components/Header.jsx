@@ -1,7 +1,18 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 
 export default function Header() {
+    const [categories, setCategories] = useState();
+
+    useEffect(() => {
+        fetch('https://alex-games.herokuapp.com/api/categories')
+            .then((res) => res.json())
+            .then(({categories}) => {
+                setCategories(categories);
+            });
+    }, []);    
+
     return (
         <header>
             <div className="logo-wrapper">
