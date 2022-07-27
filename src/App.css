@@ -36,3 +36,24 @@
     transform: rotate(360deg);
   }
 }
+
+.logo-wrapper img {
+  height: 65px;
+  margin-right: 1rem;
+}
+
+.review-card img {
+  height: 65px;
+  margin-right: 1rem;
+}
+
+.review-card {
+  display: flex;
+  padding: 1rem 0.5rem;
+  background: lightblue;
+  width: 100%;
+  margin-bottom: 1rem;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
