@@ -24,12 +24,12 @@ export default function ReviewCard() {
  return (reviews.map((review) => {
     return (
         <div className="review-card" key={review.review_id}>
-            <img src={review.review_img_url} alt="Picture of review"></img>
+            <img src={review.review_img_url} alt={`${review.owner}'s game review`}></img>
             <button>⬆️</button>
             <h3>{review.votes}</h3>
             <button>⬇️</button>
             <h2>{review.title} by {review.designer}</h2>
-            <p>{review.review_body}</p>
+            <p>{review.review_body.split('', 300)}<Link to={`../review/${review.review_id}`}> read more...</Link></p>
             <p>Category: {review.category} <br></br>
             Review owner: {review.owner}</p>
             <Link to={`/reviews/${review.review_id}/comments`}>comments : {review.comment_count}</Link>
