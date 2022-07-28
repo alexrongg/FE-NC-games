@@ -5,7 +5,6 @@ export default function ReviewCard() {
 
     const [reviews, setReviews] = useState([]);
     const {category}= useParams()
-    console.log(category)
 
     
     useEffect(() => {

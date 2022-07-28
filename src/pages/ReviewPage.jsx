@@ -8,6 +8,7 @@ export default function ReviewPage() {
     const [review, setReview] = useState({})
     const [reviewComments, setReviewComments] = useState([])
     const [err, setErr] = useState()
+    const [vote, setVote] = useState(false)
 
     useEffect(() => {
            fetch(`https://alex-games.herokuapp.com/api/reviews/${review_id}`)
@@ -28,21 +29,28 @@ export default function ReviewPage() {
             .catch((err) => {
                 setErr(err)
             })
-    }, [review_id]); 
-
+    }, [review_id, vote]); 
+   
     const addVoteHandler = (review_id) => {
+        setVote(false)
         axios
         .patch(`https://alex-games.herokuapp.com/api/reviews/${review_id}`, {"inc_votes" : 1})
-        .then((res) => {
-            console.log(res)
-        })
-        
+        .then(() => setVote(true))
     }
+    const removeVoteHandler = (review_id) => {
+        setVote(false)
+        axios
+        .patch(`https://alex-games.herokuapp.com/api/reviews/${review_id}`, {"inc_votes" : -1})
+        .then(() => setVote(true))
+    }
+    
+
+    
     
 return (
     <div>
     <div className="review-page">
-        <p><button>-</button> votes: {review.votes} <button onClick={() => {addVoteHandler(review_id)}}>+</button></p><img src={review.review_img_url}></img>
+        <p><button onClick={() => {removeVoteHandler(review_id)}}>-</button> votes: {review.votes} <button onClick={() => {addVoteHandler(review_id)}}>+</button></p><img src={review.review_img_url}></img>
         <h2>{review.title} by {review.designer}</h2>
         <p>{review.review_body}</p>
         <p>Created at: {review.created_at} by {review.owner}</p>
