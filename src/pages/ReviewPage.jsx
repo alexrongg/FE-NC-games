@@ -1,5 +1,6 @@
 import {useParams} from "react-router-dom"
 import {useState, useEffect} from "react"
+const axios = require("axios")
 
 
 export default function ReviewPage() {
@@ -29,12 +30,19 @@ export default function ReviewPage() {
             })
     }, [review_id]); 
 
-    
+    const addVoteHandler = (review_id) => {
+        axios
+        .patch(`https://alex-games.herokuapp.com/api/reviews/${review_id}`, {"inc_votes" : 1})
+        .then((res) => {
+            console.log(res)
+        })
+        
+    }
     
 return (
     <div>
     <div className="review-page">
-        <p><button>-</button> votes: {review.votes} <button>+</button></p><img src={review.review_img_url}></img>
+        <p><button>-</button> votes: {review.votes} <button onClick={() => {addVoteHandler(review_id)}}>+</button></p><img src={review.review_img_url}></img>
         <h2>{review.title} by {review.designer}</h2>
         <p>{review.review_body}</p>
         <p>Created at: {review.created_at} by {review.owner}</p>
