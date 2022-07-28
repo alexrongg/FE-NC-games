@@ -46,7 +46,7 @@ export default function ReviewCard() {
             <p>{review.review_body.split('', 300)}<Link to={`../review/${review.review_id}`}> read more...</Link></p>
             <p>Category: {review.category} <br></br>
             Review owner: {review.owner}</p>
-            <Link to={`/reviews/${review.review_id}/comments`}>comments : {review.comment_count}</Link>
+            <Link to={`../review/${review.review_id}`}>comments : {review.comment_count}</Link>
         </div>
     )
 }))
