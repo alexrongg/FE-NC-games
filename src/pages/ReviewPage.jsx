@@ -34,7 +34,7 @@ export default function ReviewPage() {
 return (
     <div>
     <div className="review-page">
-        <img src={review.review_img_url}></img>
+        <p><button>-</button> votes: {review.votes} <button>+</button></p><img src={review.review_img_url}></img>
         <h2>{review.title} by {review.designer}</h2>
         <p>{review.review_body}</p>
         <p>Created at: {review.created_at} by {review.owner}</p>
@@ -44,7 +44,7 @@ return (
         {(err) ? <p>No comments found...</p> : 
         <div>
         {reviewComments.map((comment) => {
-            return (<p>{comment.body}</p>)
+            return (<p><button>-</button> {comment.votes} <button>+</button> {comment.body} - {comment.author}</p>)
         })}
         </div>
            
