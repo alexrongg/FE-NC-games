@@ -5,8 +5,10 @@ import Header from './components/Header';
 import ReviewsPage from './pages/ReviewsPage';
 import ReviewPage from './pages/ReviewPage';
 import { useState, useEffect } from "react"
+import { UserContext } from './contexts/UserContext';
 
 function App() {
+  const [loggedInUser, setLoggedInUser] = useState("cooljmessy")
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -20,12 +22,14 @@ function App() {
 
   return (
     <BrowserRouter>
+    <UserContext.Provider value={{loggedInUser, setLoggedInUser}}>
     <Header categories={categories} />
     <Routes>
     <Route path="/" element={<ReviewsPage/>}></Route>
     <Route path="/reviews/:category" element={<ReviewsPage/>}></Route>
     <Route path="/review/:review_id" element={<ReviewPage/>}></Route>
     </Routes>
+    </UserContext.Provider>
     </BrowserRouter>
   );
 }
