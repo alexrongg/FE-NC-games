@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom"
 const axios = require("axios")
 
-export default function ReviewCard() {
-
+export default function ReviewCard({sortby}) {
     const [reviews, setReviews] = useState([]);
     const {category}= useParams()
     const [vote, setVote] = useState(false)
@@ -11,15 +10,17 @@ export default function ReviewCard() {
     
     useEffect(() => {
         if (category) {
-            fetch(`https://alex-games.herokuapp.com/api/reviews?category=${category}`)
+            fetch(`https://alex-games.herokuapp.com/api/reviews?category=${category}&&order_by=${sortby.direction}&&sort_by=${sortby.sortby}`)
             .then((res) => res.json())
             .then((items) => setReviews(items))
         } else {
-           fetch('https://alex-games.herokuapp.com/api/reviews')
+           fetch(`https://alex-games.herokuapp.com/api/reviews?order_by=${sortby.direction}&&sort_by=${sortby.sortby}`)
             .then((res) => res.json())
             .then((items) => setReviews(items)) 
         }
-    }, [category, vote]); 
+    }, [category, vote, sortby]); 
+
+    console.log(sortby)
 
     const addVoteHandler = (review_id) => {
         setVote(false)

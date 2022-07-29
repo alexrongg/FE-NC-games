@@ -25,7 +25,7 @@ export default function ReviewPage() {
             fetch(`https://alex-games.herokuapp.com/api/reviews/${review_id}/comments`)
             .then(function(response) {
                 if (!response.ok){
-                    throw Error(response.statusText);
+                    throw "No comment";
                 }
                 return response.json()
             })
@@ -51,13 +51,13 @@ export default function ReviewPage() {
         .then(() => setVote(true))
     }
     const onSubmitHandler = (e) => {
-        setSubmitted(true)
         e.preventDefault();
         axios
         .post(`https://alex-games.herokuapp.com/api/reviews/${review_id}/comments`, { "username": username, "body": commentBody})
         .then((res) => {
             setCommentBody("")
             setUsername("")
+            setSubmitted(true)
         })
         .catch((err) => {
             setSubmitted(false)
@@ -65,7 +65,7 @@ export default function ReviewPage() {
         })
     };
      
-
+    console.log(err)
       
 return (
     <div>
@@ -81,7 +81,7 @@ return (
     </div>
     <div className="comment-section">
         <h3>Comments</h3>
-        {(err !== "Please use a correct username") ? <p>No comments found...</p> : 
+        {(err === "No comment") ? <p>No comments found...</p> : 
         <div>
         {reviewComments.map((comment) => {
             return (<div><button>-</button> {comment.votes} <button>+</button> {comment.body} - {comment.author}</div>)
