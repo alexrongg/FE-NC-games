@@ -7,7 +7,7 @@ export default function ReviewPage() {
     const {review_id} = useParams()
     const [review, setReview] = useState({})
     const [reviewComments, setReviewComments] = useState([])
-    const [err, setErr] = useState()
+    const [err, setErr] = useState("")
     const [commentBody, setCommentBody] = useState("")
     const [username, setUsername] = useState("")
     const [vote, setVote] = useState(false)
@@ -56,12 +56,12 @@ export default function ReviewPage() {
         axios
         .post(`https://alex-games.herokuapp.com/api/reviews/${review_id}/comments`, { "username": username, "body": commentBody})
         .then((res) => {
-            setSubmitted(false)
             setCommentBody("")
             setUsername("")
         })
         .catch((err) => {
-            console.log(err)
+            setSubmitted(false)
+            setErr("Please use a correct username")
         })
     };
      
@@ -81,11 +81,12 @@ return (
     </div>
     <div className="comment-section">
         <h3>Comments</h3>
-        {(err) ? <p>No comments found...</p> : 
+        {(err !== "Please use a correct username") ? <p>No comments found...</p> : 
         <div>
         {reviewComments.map((comment) => {
             return (<div><button>-</button> {comment.votes} <button>+</button> {comment.body} - {comment.author}</div>)
         })}
+        
         <div className="post-comment">
         </div>
         </div>   
@@ -95,8 +96,9 @@ return (
             <textarea value={commentBody}name="commentbox" rows="10" cols="70" placeholder="comment here" onChange={(e) => setCommentBody(e.target.value)}></textarea><br/>
             <label for="username">Your username:</label><br/>
             <input value={username} type="text" id="username" name="username" onChange={(e) => setUsername(e.target.value)}></input><br/>
-            <input type="submit" value="Submit"></input>
+            <input type="submit" value="Submit" disabled={(submitted)? true : false}></input>   
         </form>
+        <p>{err}</p>
     </div>
     </div>
 )
