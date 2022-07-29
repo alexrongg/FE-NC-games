@@ -20,7 +20,6 @@ export default function ReviewCard({sortby}) {
         }
     }, [category, vote, sortby]); 
 
-    console.log(sortby)
 
     const addVoteHandler = (review_id) => {
         setVote(false)
