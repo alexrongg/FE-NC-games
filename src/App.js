@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Header from './components/Header';
 import ReviewsPage from './pages/ReviewsPage';
+import ReviewPage from './pages/ReviewPage';
 import { useState, useEffect } from "react"
 
 function App() {
@@ -23,7 +24,7 @@ function App() {
     <Routes>
     <Route path="/reviews" element={<ReviewsPage/>}></Route>
     <Route path="/reviews/:category" element={<ReviewsPage/>}></Route>
-     
+    <Route path="/review/:review_id" element={<ReviewPage/>}></Route>
     </Routes>
     </BrowserRouter>
   );
