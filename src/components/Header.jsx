@@ -4,7 +4,7 @@ import { UserContext } from '../contexts/UserContext';
 
 
 export default function Header({categories}) {
-    const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+    const { loggedInUser} = useContext(UserContext);
 
     const dropDownHandler = () => {
         document.getElementById("myDropdown").classList.toggle("show");

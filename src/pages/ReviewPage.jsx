@@ -33,7 +33,6 @@ export default function ReviewPage() {
             })
     };
 
-    console.log(reviewComments)
 
     useEffect(() => {
         setIsLoading(true)
@@ -93,7 +92,7 @@ return (
     <div className="review-page">
         {(isLoading) ? (<p>Loading...</p>) : (
         <div>
-        <p><button onClick={() => {removeVoteHandler(review_id)}}>-</button> votes: {review.votes} <button onClick={() => {addVoteHandler(review_id)}}>+</button></p><img src={review.review_img_url}></img>
+        <p><button onClick={() => {removeVoteHandler(review_id)}}>-</button> votes: {review.votes} <button onClick={() => {addVoteHandler(review_id)}}>+</button></p><img alt="user review" src={review.review_img_url}></img>
         <h2>{review.title} by {review.designer}</h2>
         <p>{review.review_body}</p>
         <p>Created at: {review.created_at} by {review.owner}</p>
