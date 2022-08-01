@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useContext } from "react";
+import { UserContext } from '../contexts/UserContext';
 
 
 export default function Header({categories}) {
+    const { loggedInUser, setLoggedInUser } = useContext(UserContext);
 
     const dropDownHandler = () => {
         document.getElementById("myDropdown").classList.toggle("show");
@@ -24,7 +26,7 @@ export default function Header({categories}) {
                 <h1>Games review</h1>
                 <div className="logo-text">REVIEWS FOR YOUS</div>
             </div>
-            <p>Hello Guest!</p>
+            <p>Hello {loggedInUser}!</p>
             <Link to={'/users'}>Login</Link>
             <nav className="navbar">
                 <ul>

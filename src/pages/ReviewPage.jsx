@@ -1,5 +1,6 @@
 import {useParams} from "react-router-dom"
-import {useState, useEffect} from "react"
+import {useState, useEffect, useContext} from "react"
+import { UserContext } from '../contexts/UserContext';
 const axios = require("axios")
 
 
@@ -9,20 +10,14 @@ export default function ReviewPage() {
     const [reviewComments, setReviewComments] = useState([])
     const [err, setErr] = useState("")
     const [commentBody, setCommentBody] = useState("")
-    const [username, setUsername] = useState("")
+    const { loggedInUser } = useContext(UserContext);
     const [vote, setVote] = useState(false)
     const [submitted, setSubmitted] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
+    const [deleted, setDeleted ] = useState(false)
 
-    useEffect(() => {
-        setIsLoading(true)
-           fetch(`https://alex-games.herokuapp.com/api/reviews/${review_id}`)
-            .then((res) => res.json())
-            .then(({review}) => {
-                setReview(review)
-                setIsLoading(false)
-            });
-            fetch(`https://alex-games.herokuapp.com/api/reviews/${review_id}/comments`)
+    const getComments = () => {
+        fetch(`https://alex-games.herokuapp.com/api/reviews/${review_id}/comments`)
             .then(function(response) {
                 if (!response.ok){
                     throw "No comment";
@@ -36,7 +31,20 @@ export default function ReviewPage() {
             .catch((err) => {
                 setErr(err)
             })
-    }, [review_id, vote, submitted]); 
+    };
+
+    console.log(reviewComments)
+
+    useEffect(() => {
+        setIsLoading(true)
+           fetch(`https://alex-games.herokuapp.com/api/reviews/${review_id}`)
+            .then((res) => res.json())
+            .then(({review}) => {
+                setReview(review)
+                setIsLoading(false)
+            });
+        getComments()
+    }, [review_id, vote, submitted, deleted]); 
    
     const addVoteHandler = (review_id) => {
         setVote(false)
@@ -53,19 +61,32 @@ export default function ReviewPage() {
     const onSubmitHandler = (e) => {
         e.preventDefault();
         axios
-        .post(`https://alex-games.herokuapp.com/api/reviews/${review_id}/comments`, { "username": username, "body": commentBody})
+        .post(`https://alex-games.herokuapp.com/api/reviews/${review_id}/comments`, { "username": loggedInUser, "body": commentBody})
         .then((res) => {
             setCommentBody("")
-            setUsername("")
             setSubmitted(true)
         })
         .catch((err) => {
             setSubmitted(false)
-            setErr("Please use a correct username")
         })
     };
+    
+    const removeCommentHandler = (comment_id, author) => {
+        if (author === loggedInUser) {
+            axios
+            .delete(`https://alex-games.herokuapp.com/api/comments/${comment_id}`)
+            .then(() => {
+            setDeleted(true)  
+            })
+            
+            
+        } else {
+            setDeleted(false)
+            throw "Cannot delete comment that's not yours"
+        }
+        
+    };
      
-    console.log(err)
       
 return (
     <div>
@@ -84,7 +105,7 @@ return (
         {(err === "No comment") ? <p>No comments found...</p> : 
         <div>
         {reviewComments.map((comment) => {
-            return (<div><button>-</button> {comment.votes} <button>+</button> {comment.body} - {comment.author}</div>)
+            return (<div><button>-</button> {comment.votes} <button>+</button> {comment.body} - {comment.author} <button onClick={() => {removeCommentHandler(comment.comment_id, comment.author)}} disabled={(deleted)? true : false}>DEL</button></div>)
         })}
         
         <div className="post-comment">
@@ -94,11 +115,8 @@ return (
      <form onSubmit={onSubmitHandler}>
             <label for="comment">New comment:</label><br/>
             <textarea value={commentBody}name="commentbox" rows="10" cols="70" placeholder="comment here" onChange={(e) => setCommentBody(e.target.value)}></textarea><br/>
-            <label for="username">Your username:</label><br/>
-            <input value={username} type="text" id="username" name="username" onChange={(e) => setUsername(e.target.value)}></input><br/>
             <input type="submit" value="Submit" disabled={(submitted)? true : false}></input>   
         </form>
-        <p>{err}</p>
     </div>
     </div>
 )
