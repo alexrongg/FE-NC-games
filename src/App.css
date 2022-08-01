@@ -123,3 +123,8 @@
 .show {
   display: block;
 }
+
+#comment {
+  /* height:200px;
+  width: 500px; */
+}

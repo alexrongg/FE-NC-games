@@ -2,8 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom"
 const axios = require("axios")
 
-export default function ReviewCard() {
-
+export default function ReviewCard({sortby}) {
     const [reviews, setReviews] = useState([]);
     const {category}= useParams()
     const [vote, setVote] = useState(false)
@@ -11,15 +10,16 @@ export default function ReviewCard() {
     
     useEffect(() => {
         if (category) {
-            fetch(`https://alex-games.herokuapp.com/api/reviews?category=${category}`)
+            fetch(`https://alex-games.herokuapp.com/api/reviews?category=${category}&&order_by=${sortby.direction}&&sort_by=${sortby.sortby}`)
             .then((res) => res.json())
             .then((items) => setReviews(items))
         } else {
-           fetch('https://alex-games.herokuapp.com/api/reviews')
+           fetch(`https://alex-games.herokuapp.com/api/reviews?order_by=${sortby.direction}&&sort_by=${sortby.sortby}`)
             .then((res) => res.json())
             .then((items) => setReviews(items)) 
         }
-    }, [category, vote]); 
+    }, [category, vote, sortby]); 
+
 
     const addVoteHandler = (review_id) => {
         setVote(false)
@@ -46,7 +46,7 @@ export default function ReviewCard() {
             <p>{review.review_body.split('', 300)}<Link to={`../review/${review.review_id}`}> read more...</Link></p>
             <p>Category: {review.category} <br></br>
             Review owner: {review.owner}</p>
-            <Link to={`/reviews/${review.review_id}/comments`}>comments : {review.comment_count}</Link>
+            <Link to={`../review/${review.review_id}`}>comments : {review.comment_count}</Link>
         </div>
     )
 }))

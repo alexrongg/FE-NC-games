@@ -22,7 +22,7 @@ function App() {
     <BrowserRouter>
     <Header categories={categories} />
     <Routes>
-    <Route path="/reviews" element={<ReviewsPage/>}></Route>
+    <Route path="/" element={<ReviewsPage/>}></Route>
     <Route path="/reviews/:category" element={<ReviewsPage/>}></Route>
     <Route path="/review/:review_id" element={<ReviewPage/>}></Route>
     </Routes>

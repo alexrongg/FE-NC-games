@@ -28,7 +28,7 @@ export default function Header({categories}) {
             <Link to={'/users'}>Login</Link>
             <nav className="navbar">
                 <ul>
-                    <Link to={'/reviews'}>All Reviews</Link>
+                    <Link to={'/'}>All Reviews</Link>
                     <Link to={'/users'}>All Users</Link>
                     <Link to={'/categories'}>All Categories</Link>
                     <div class="dropdown">
