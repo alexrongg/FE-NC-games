@@ -105,7 +105,7 @@ return (
         {(err === "No comment") ? <p>No comments found...</p> : 
         <div>
         {reviewComments.map((comment) => {
-            return (<div><button>-</button> {comment.votes} <button>+</button> {comment.body} - {comment.author} <button onClick={() => {removeCommentHandler(comment.comment_id, comment.author)}}>DEL</button></div>)
+            return (<div><button>-</button> {comment.votes} <button>+</button> {comment.body} - {comment.author} <button onClick={() => {removeCommentHandler(comment.comment_id, comment.author)}} disabled={(deleted)? true : false}>DEL</button></div>)
         })}
         
         <div className="post-comment">
